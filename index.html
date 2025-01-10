@@ -330,13 +330,19 @@ Looking forward to connecting!`;
 
             document.addEventListener("mousedown", startDrag);
             document.addEventListener("touchstart", (e) => {
-                e.preventDefault();
-                startDrag(e.touches[0]);
+                // Don't prevent default for buttons and form elements
+                if (!e.target.closest('button') && !e.target.closest('form')) {
+                    e.preventDefault();
+                    startDrag(e.touches[0]);
+                }
             }, { passive: false });
             document.addEventListener("mousemove", drag);
             document.addEventListener("touchmove", (e) => {
-                e.preventDefault();
-                drag(e.touches[0]);
+                // Don't prevent default for buttons and form elements
+                if (!e.target.closest('button') && !e.target.closest('form')) {
+                    e.preventDefault();
+                    drag(e.touches[0]);
+                }
             }, { passive: false });
             document.addEventListener("mouseup", endDrag);
             document.addEventListener("touchend", endDrag);
