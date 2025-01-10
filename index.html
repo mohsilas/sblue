@@ -329,11 +329,15 @@ Looking forward to connecting!`;
             );
 
             document.addEventListener("mousedown", startDrag);
-            document.addEventListener("touchstart", (e) =>
-                startDrag(e.touches[0]),
-            );
+            document.addEventListener("touchstart", (e) => {
+                e.preventDefault();
+                startDrag(e.touches[0]);
+            }, { passive: false });
             document.addEventListener("mousemove", drag);
-            document.addEventListener("touchmove", (e) => drag(e.touches[0]));
+            document.addEventListener("touchmove", (e) => {
+                e.preventDefault();
+                drag(e.touches[0]);
+            }, { passive: false });
             document.addEventListener("mouseup", endDrag);
             document.addEventListener("touchend", endDrag);
 
@@ -344,10 +348,10 @@ Looking forward to connecting!`;
 
             function drag(e) {
                 if (!isDragging) return;
-                e.preventDefault();
-                const deltaY = startY - e.clientY;
+                const currentY = e.clientY;
+                const deltaY = startY - currentY;
                 updateScroll(deltaY * 0.5);
-                startY = e.clientY;
+                startY = currentY;
             }
 
             function endDrag() {
